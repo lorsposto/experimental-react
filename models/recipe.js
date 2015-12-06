@@ -54,4 +54,37 @@ var RecipeSchema = new Schema({
     }]
 });
 
+RecipeSchema.pre('save', function(next) {
+    console.log("Saving:", this.title);
+
+    for(var ing in this.ingredients) {
+        if(ing.weight !== {}) {
+            if(ing.volume === {}) {
+
+            }
+            if(ing.count === {}) {
+
+            }
+        }
+        else if(ing.volume !== {}) {
+            if(ing.weight === {}) {
+
+            }
+            if(ing.count === {}) {
+
+            }
+        }
+        else if (ing.count !== {}) {
+            if(ing.volume === {}) {
+
+            }
+            if(ing.weight === {}) {
+
+            }
+        }
+    }
+
+    next();
+});
+
 module.exports = mongoose.model('Recipe', RecipeSchema);

@@ -4,15 +4,35 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var mongoose = require('mongoose');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var mongoose = require('mongoose');
+var Recipe = require('./models/recipe.js');
+
 var server = express();
 
-mongoose.connect('mongodb://localhost:recipe');
+mongoose.connect('mongodb://localhost/recipe', function(err, db) {
+  if (!err) {
+    console.log("Connected to mongo");
+  }
+});
+
+// load fixture
+mongoose.connection.once('connected', function() {
+  fs.readFile('fixture.json', function(err, data) {
+    if (err) throw err;
+    var fix = JSON.parse(data);
+
+    for(var key in fix) {
+      if (key === 'Recipe') {
+        new Recipe(fix[key]).save();
+      }
+    }
+  });
+});
 
 // view engine setup
 server.set('views', path.join(__dirname, 'views'));

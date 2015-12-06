@@ -1,6 +1,6 @@
 {
-  "Recipe": [
-    {
+  "Recipe":
+  {
       "title": "Pear walnut cupcakes",
       "description": "Cupcake-muffin hybrids made with sous-vide pear puree.",
       "madeOn": [
@@ -107,6 +107,5 @@
         "sous-vide",
         "dessert"
       ]
-    }
-  ]
+  }
 }
