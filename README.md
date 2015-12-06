@@ -2,6 +2,10 @@
 
 Todo
 
+[ ] Nodemon, forever, livereload
+
+[ ] Sass
+
 [ ] Make tickets for these
 
 [ ] Data scrape for ingredient amounts
