@@ -1,34 +1,69 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var fs = require('fs');
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    sassMiddleware = require('node-sass-middleware'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    fs = require('fs'),
+    async = require('async');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var recipes = require('./routes/recipes');
 
 var mongoose = require('mongoose');
-var Recipe = require('./models/recipe.js');
+
+// My things
+var Recipe = require('./models/recipe');
+var Ingredient = require('./models/ingredient');
 
 var server = express();
 
-mongoose.connect('mongodb://localhost/recipe', function(err, db) {
+mongoose.connect('mongodb://localhost/recipes', function(err, db) {
   if (!err) {
-    console.log("Connected to mongo");
+    console.log('Connected to mongo');
   }
 });
 
 // load fixture
 mongoose.connection.once('connected', function() {
-  fs.readFile('fixture.json', function(err, data) {
+  Recipe.count({}, function(err, c) {
+    // Count recipes and drop
+    if (err) console.log('Error retrieving Recipe count.');
+    if (c > 0) {
+      console.log('Removing old data from Recipes.');
+      Recipe.remove({}, function(err) {
+        if (err) console.log('Error removing all from Recipes.');
+      });
+    }
+  });
+  Ingredient.count({}, function(err, c) {
+    if (err) console.log('Error retrieving Ingredient count.');
+    if (c > 0) {
+      console.log('Removing old data from Ingredient.');
+      Ingredient.remove({}, function(err) {
+        if (err) console.log('Error removing all from Ingredient.');
+      });
+    }
+  });
+
+  // read fixture and populate
+  fs.readFile('./fixture/fixture.json', function(err, data) {
     if (err) throw err;
     var fix = JSON.parse(data);
 
-    for(var key in fix) {
-      if (key === 'Recipe') {
-        new Recipe(fix[key]).save();
+    for (var id in fix) {
+      for (var key in fix[id]) {
+        if (key === 'Recipe') {
+          new Recipe(fix[id][key]).save(function(err) {
+            if (err) console.log('Error saving recipe:', err);
+          });
+        }
+        else if (key === 'Ingredient') {
+          new Ingredient(fix[id][key]).save(function(err) {
+            if (err) console.log('Error saving ingredient:', err);
+          });
+        }
       }
     }
   });
@@ -36,7 +71,7 @@ mongoose.connection.once('connected', function() {
 
 // view engine setup
 server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'jade');
+server.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -44,10 +79,20 @@ server.use(logger('dev'));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser());
+
+server.use(
+    sassMiddleware({
+      src: __dirname + '/sass',
+      dest: __dirname + '/public/css',
+      debug: true,
+    })
+);
+
 server.use(express.static(path.join(__dirname, 'public')));
+server.use(express.static(path.join(__dirname, 'fixture')));
 
 server.use('/', routes);
-server.use('/users', users);
+server.use('/recipes', recipes);
 
 // catch 404 and forward to error handler
 server.use(function(req, res, next) {
@@ -64,6 +109,7 @@ if (server.get('env') === 'development') {
   server.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
+      title: 'Error',
       message: err.message,
       error: err
     });
@@ -75,10 +121,10 @@ if (server.get('env') === 'development') {
 server.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
+    title: 'Error',
     message: err.message,
     error: {}
   });
 });
-
 
 module.exports = server;

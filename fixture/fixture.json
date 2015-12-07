@@ -1,0 +1,150 @@
+[
+  {
+    "Recipe": {
+      "_id": 1,
+      "title": "Pear walnut cupcakes",
+      "description": "Cupcake-muffin hybrids made with sous-vide pear puree.",
+      "madeOn": [
+        "2015-12-04",
+        "2015-12-05"
+      ],
+      "equipment": [
+        "immersion circulator",
+        "muffin pan",
+        "stand mixer"
+      ],
+      "steps": [
+        {
+          "text": "Step 1",
+          "sortOrder": "1"
+        },
+        {
+          "text": "Step 2",
+          "sortOrder": "2"
+        },
+        {
+          "text": "Step 3",
+          "sortOrder": "3"
+        }
+      ],
+      "notes": [
+        "Too much vanilla, masked the flavor of the pear.",
+        "Muffin-like texture.",
+        "Next time, reduce pear puree"
+      ],
+      "tags": [
+        "baking",
+        "cupcake",
+        "cake",
+        "sous-vide",
+        "dessert"
+      ],
+      "images": [
+        "img/IMG_1128.jpg"
+      ]
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "flour",
+      "volume": {
+        "amount": "2",
+        "units": "cups"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "baking powder",
+      "volume": {
+        "amount": "2",
+        "units": "tsp"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "sea salt",
+      "volume": {
+        "amount": "1/2",
+        "units": "tsp"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "butter",
+      "weight": {
+        "amount": "1/2",
+        "units": "lbs"
+      },
+      "volume": {
+        "amount": "1",
+        "units": "cups"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "egg",
+      "count": {
+        "amount": "4"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "pear puree",
+      "volume": {
+        "amount": "2",
+        "units": "cups"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "black pepper",
+      "volume": {
+        "amount": "1",
+        "units": "tbs"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "ground cloves",
+      "volume": {
+        "amount": "1",
+        "units": "tsp"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "walnuts",
+      "volume": {
+        "amount": "1",
+        "units": "cups"
+      }
+    }
+  },
+  {
+    "Ingredient": {
+      "recipe": "1",
+      "name": "vanilla extract",
+      "volume": {
+        "amount": "1",
+        "units": "tsp"
+      }
+    }
+  }
+]
