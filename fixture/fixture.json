@@ -13,7 +13,7 @@
         "muffin pan",
         "stand mixer"
       ],
-      "steps": [
+      "directions": [
         {
           "text": "Step 1",
           "sortOrder": "1"
@@ -39,8 +39,14 @@
         "sous-vide",
         "dessert"
       ],
+      "preptime": "30 min",
+      "cooktime": "20-25 min",
+      "yield": {
+        "amount": "[18,20]",
+        "units": "cupcakes"
+      },
       "images": [
-        "img/IMG_1128.jpg"
+        "images/IMG_1128.jpg"
       ]
     }
   },
@@ -146,5 +152,27 @@
         "units": "tsp"
       }
     }
-  }
+  },
+  {"Recipe": {"_id": 2, "images": ["images/DSC01948.jpg"]}},
+  {"Recipe": {"_id": 3, "images": ["images/DSC03119.jpg"]}},
+  {"Recipe": {"_id": 4, "images": ["images/DSC03246.jpg"]}},
+  {"Recipe": {"_id": 5, "images": ["images/DSC03273.jpg"]}},
+  {"Recipe": {"_id": 6, "images": ["images/DSC03494.jpg"]}},
+  {"Recipe": {"_id": 7, "images": ["images/DSC03636.jpg"]}},
+  {"Recipe": {"_id": 8, "images": ["images/DSC03782.jpg"]}},
+  {"Recipe": {"_id": 9, "images": ["images/DSC04485.jpg"]}},
+  {"Recipe": {"_id": 10, "images": ["images/DSC04599.jpg"]}},
+  {"Recipe": {"_id": 11, "images": ["images/DSC04602.jpg"]}},
+  {"Recipe": {"_id": 12, "images": ["images/DSC04627.jpg"]}},
+  {"Recipe": {"_id": 13, "images": ["images/DSC04703.jpg"]}},
+  {"Recipe": {"_id": 14, "images": ["images/DSC04749.jpg"]}},
+  {"Recipe": {"_id": 15, "images": ["images/DSC05134.jpg"]}},
+  {"Recipe": {"_id": 16, "images": ["images/DSC06709.jpg"]}},
+  {"Recipe": {"_id": 17, "images": ["images/DSC06741.jpg"]}},
+  {"Recipe": {"_id": 18, "images": ["images/DSC06765.jpg"]}},
+  {"Recipe": {"_id": 19, "images": ["images/DSC06941.jpg"]}},
+  {"Recipe": {"_id": 20, "images": ["images/DSC06993.jpg"]}},
+  {"Recipe": {"_id": 21, "images": ["images/DSC_6347.jpg"]}},
+  {"Recipe": {"_id": 22, "images": ["images/IMG_5557.jpg"]}},
+  {"Recipe": {"_id": 23, "images": ["images/IMG_5565.jpg"]}}
 ]

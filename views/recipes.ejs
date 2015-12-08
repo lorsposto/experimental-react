@@ -3,21 +3,22 @@
 <head>
     <% include ./partials/head %>
 </head>
-<body class="container">
+<body>
 
-<header>
+<div id="layout">
     <% include ./partials/header %>
-</header>
+    <div id="react-content">
+        <%- reactOutput %>
+    </div>
 
-<main>
-    <!--<div class="jumbotron">-->
-        <%- reactoutput %>
-    <!--</div>-->
-</main>
-
-<footer>
-    <% include ./partials/footer %>
-</footer>
+    <script id="react-data">
+        <%- data %>
+    </script>
+    <footer>
+        <% include ./partials/footer %>
+    </footer>
+</div>
 <% include ./partials/styles %>
+<%- scripts %>
 </body>
 </html>

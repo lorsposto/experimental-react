@@ -1,0 +1,98 @@
+@import url(../bower_components/normalize-css/normalize.css);
+@import url(../bower_components/font-awesome/css/font-awesome.css);
+@import url(../bower_components/pure/pure-min.css);
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.custom-restricted-width {
+  /* To limit the menu width to the content of the menu: */
+  display: inline-block;
+  /* Or set the width explicitly: */
+  /* width: 10em; */ }
+
+body {
+  padding-top: 0; }
+
+input {
+  margin-bottom: 5px; }
+
+footer {
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  height: 60px;
+  background-color: #f5f5f5; }
+
+.form-component {
+  padding: 5px;
+  width: 100%; }
+
+.container {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 15px; }
+  .container:after {
+    content: " ";
+    display: block;
+    clear: both; }
+  .container:after {
+    content: " ";
+    display: block;
+    clear: both; }
+
+.row {
+  width: 100%;
+  float: left;
+  margin-left: 0;
+  margin-right: 0; }
+
+.lor-button {
+  background: #f5f5f5;
+  color: #777; }
+
+.lor-legend {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  letter-spacing: normal;
+  padding-top: 0px !important; }
+
+.lor-grid-img {
+  width: 25%;
+  height: 25vh;
+  background: 50% 50% no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover; }
+
+#layout {
+  padding-left: 160px;
+  display: block;
+  overflow: auto;
+  min-height: 80vh; }
+
+#lor-menu {
+  position: fixed;
+  width: 160px;
+  margin-left: -160px;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background: black; }
+
+#react-content {
+  display: block;
+  min-height: 100%; }
+
+.lor-form-col {
+  padding-right: 20px; }
+
+.lor-button-primary {
+  margin-top: 15px;
+  float: right; }
+
+.lor-form-container {
+  width: 75%;
+  max-width: 100%; }
+
+/*# sourceMappingURL=build.css.map */

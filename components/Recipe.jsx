@@ -1,5 +1,4 @@
 var React = require('react');
-var reactIngredient = React.createFactory(require('./Ingredient.jsx'));
 
 var Recipe = React.createClass({
     render: function() {

@@ -80,16 +80,19 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser());
 
-server.use(
-    sassMiddleware({
-      src: __dirname + '/sass',
-      dest: __dirname + '/public/css',
-      debug: true,
-    })
-);
+//server.use(
+//    sassMiddleware({
+//      src: path.join(__dirname, 'sass'),
+//      dest: path.join(__dirname, 'public/css'),
+//      debug: true,
+//      indentedSyntax: true,
+//      outputStyle: 'compressed',
+//      prefix: '/css'
+//    })
+//);
 
-server.use(express.static(path.join(__dirname, 'public')));
-server.use(express.static(path.join(__dirname, 'fixture')));
+server.use(express.static(path.join(__dirname, '/public')));
+server.use(express.static(path.join(__dirname, 'bower_components')));
 
 server.use('/', routes);
 server.use('/recipes', recipes);

@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.Types.ObjectId,
     conversion = require('../utils/conversion'),
     Ingredient = require('./ingredient');
+
 var RecipeSchema = new Schema({
     _id: Number,
     title: {
@@ -22,7 +23,7 @@ var RecipeSchema = new Schema({
         type: String,
         index: true
     }],
-    steps: [{
+    directions: [{
         text: String,
         sortOrder: Number
     }],
@@ -31,6 +32,12 @@ var RecipeSchema = new Schema({
         type: String,
         index: true
     }],
+    preptime: String,
+    cooktime: String,
+    yield: {
+        amount: String,
+        units: String
+    },
     images: [String]
 });
 

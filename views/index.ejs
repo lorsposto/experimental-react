@@ -3,22 +3,18 @@
 <head>
   <% include ./partials/head %>
 </head>
-<body class="container">
+<body>
 
-<header>
+<div id="layout">
   <% include ./partials/header %>
-</header>
-
-<main>
-  <div class="jumbotron">
-    <h1>This is great</h1>
-    <p>Welcome to templating using EJS</p>
+  <div id="react-content">
+    <%- title %>
   </div>
-</main>
-
-<footer>
-  <% include ./partials/footer %>
-</footer>
-
+  <footer>
+    <% include ./partials/footer %>
+  </footer>
+</div>
+<% include ./partials/styles %>
+<!--<script src="/js/components.js"></script>-->
 </body>
 </html>

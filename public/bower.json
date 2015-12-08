@@ -1,0 +1,32 @@
+{
+  "name": "lorrainesposto",
+  "homepage": "https://github.com/lorsposto/lorrainesposto",
+  "authors": [
+    "(Lorraine Sposto <lorrainesposto@gmail.com>"
+  ],
+  "description": "Lorraine Sposto",
+  "main": "server.js",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "susy": "~2.2.7",
+    "normalize-css": "normalize.css#~3.0.3",
+    "font-awesome": "fontawesome#~4.5.0",
+    "requirejs": "~2.1.22",
+    "react": "~0.14.3",
+    "react-dom": "~0.1.0",
+    "pure": "~0.6.0"
+  }
+}
