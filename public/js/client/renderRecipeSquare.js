@@ -4,7 +4,11 @@
 var RecipeGrid = React.createClass({displayName: "RecipeGrid",
     render: function() {
         return React.createElement("div", {id: "recipe-grid"}, 
-            this.props.squares
+            this.props.rows.map((row) =>
+                React.createElement("div", {key: this.props.rows.indexOf(row), class: "recipe-grid-row"}, 
+                    row
+                )
+                )
         );
     }
 });

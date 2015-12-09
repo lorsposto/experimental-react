@@ -25,16 +25,20 @@ router.all('/', function(req, res, next) {
 
 router.get('/', function(err, res, next) {
     Recipes.find({}, function(err, recipes) {
-        var imgSquares = [];
+        //var imgSquares = [];
+        var imgRows = [];
         var jsonData = [];
         async.each(recipes, function (r, callback) {
             jsonData.push({"_id": r._id, "image": r.images[0]});
-            imgSquares.push(reactRecipeSquare({_id: r._id, image: r.images[0]}));
+            //imgSquares.push(reactRecipeSquare({_id: r._id, image: r.images[0]}));
+            var id = r._id%5;
+            if (imgRows[id] === undefined) imgRows[id] = [];
+            imgRows[id].push(reactRecipeSquare({_id: r._id, image: r.images[0]}));
             callback();
         }, function(err) {
             jsonData = JSON.stringify(jsonData);
             res.render('recipes', {
-                reactOutput: ReactDOMServer.renderToString(reactRecipeGrid({squares: imgSquares})),
+                reactOutput: ReactDOMServer.renderToString(reactRecipeGrid({rows: imgRows})),
                 scripts: '<script src="/js/client/renderRecipeSquare.js"></script>',
                 data: jsonData
             })
@@ -81,6 +85,7 @@ router.post('/new/submit', multipartMiddleware, function(req, res, next) {
         }
         else {
             console.log('Redirecting...');
+            res.location('/recipes');
             res.redirect('/recipes');
         }
     });

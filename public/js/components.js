@@ -74,7 +74,14 @@ var RecipeForm = React.createClass({displayName: "RecipeForm",
         request.post('/recipes/new/submit')
             .send(formData)
             .end((err, res) => {
-                console.log('callback', err, res);
+                console.log(res);
+                console.log("OK", res.ok);
+                console.log("location", res.headers['tm-finalurldhdg']);
+                if (!res.ok || !res.headers['tm-finalurldhdg']) {
+                    console.log('Failed');
+                    return;
+                }
+                window.location.replace(res.headers['tm-finalurldhdg']);
             });
     },
     onDrop: function (files) {
@@ -133,7 +140,11 @@ module.exports = RecipeForm;
 var RecipeGrid = React.createClass({displayName: "RecipeGrid",
     render: function() {
         return React.createElement("div", {id: "recipe-grid"}, 
-            this.props.squares
+            this.props.rows.map((row) =>
+                React.createElement("div", {key: this.props.rows.indexOf(row), class: "recipe-grid-row"}, 
+                    row
+                )
+                )
         );
     }
 });

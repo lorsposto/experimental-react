@@ -62,7 +62,7 @@ footer {
 
 .lor-grid-img {
   width: 25%;
-  height: 25vh;
+  padding-bottom: 23%;
   background: 50% 50% no-repeat;
   -webkit-background-size: cover;
   background-size: cover; }
