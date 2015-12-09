@@ -9,9 +9,19 @@ var express = require('express'),
     reactRecipeSquare = React.createFactory(require('../components/RecipeSquare.jsx')),
     reactRecipeGrid = React.createFactory(require('../components/RecipeGrid.jsx')),
     reactRecipeForm = React.createFactory(require('../components/RecipeForm.jsx')),
-    async = require('async');
+    async = require('async'),
+    fs = require('fs'),
+    path = require('path'),
+    multipart = require('connect-multiparty'),
+    multipartMiddleware = multipart();
 
 var router = express.Router();
+
+router.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 router.get('/', function(err, res, next) {
     Recipes.find({}, function(err, recipes) {
@@ -29,6 +39,50 @@ router.get('/', function(err, res, next) {
                 data: jsonData
             })
         });
+    });
+});
+
+router.get('/:recipe_id([0-9]+)', function(err, res, next) {
+
+});
+
+router.post('/new/submit', multipartMiddleware, function(req, res, next) {
+    async.forEachOf(req.files, (value, key, callback) => {
+        async.waterfall([
+            (callback) => {
+                fs.readFile(req.files[key]['path'], (err, data) => {
+                    var savePath = path.join(path.resolve('uploads'), req.files[key]['name']);
+                    callback(null, savePath, data);
+                });
+            },
+            (savePath, data, callback) => {
+                fs.writeFile(savePath, data, (err) => {
+                    if(err) {
+                        callback(savePath);
+                    } else {
+                        callback(null, savePath);
+                    }
+                });
+            }
+        ],
+            (err, savePath) => {
+                if (err) {
+                    console.log('1 Error saving', savePath, ':', err);
+                    callback(savePath);
+                } else {
+                    console.log(savePath, 'saved!');
+                    callback();
+                }
+            });
+    }, (err) => {
+        if (err) {
+            console.log('500 Error saving:', err);
+            res.status(500).send({'error':err});
+        }
+        else {
+            console.log('Redirecting...');
+            res.redirect('/recipes');
+        }
     });
 });
 

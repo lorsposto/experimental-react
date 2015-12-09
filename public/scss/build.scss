@@ -22,10 +22,6 @@ body {
   padding-top: 0;
 }
 
-input {
-  margin-bottom: 5px;
-}
-
 footer {
   bottom: 0;
   width: 100%;
@@ -36,7 +32,16 @@ footer {
 
 .form-component {
   padding: 5px;
+  margin: 5px;
   width: 100%;
+}
+
+.form-component.lor-dropzone {
+  border: 1px #777 dashed;
+  padding: 20px;
+  box-shadow: inset 0 1px 3px #ddd;
+  max-height: 500px;
+  overflow: scroll;
 }
 
 .container {
@@ -45,8 +50,8 @@ footer {
   margin: 15px;
 }
 
-.row {
-  @include span(1 of 1);
+.lor-content {
+  margin-left: 10px;
 }
 
 .lor-button {
@@ -68,11 +73,33 @@ footer {
   background-size: cover;
 }
 
+.lor-thumbnail {
+  width: 100%;
+  height: auto;
+  padding: 1px;
+}
+
+.lor-form-col {
+  padding-right: 20px;
+}
+
+.lor-button-primary {
+  margin-top: 15px;
+  float: right;
+}
+
+.lor-form-container {
+  width: 75%;
+  max-width: 100%;
+}
+
 #layout {
   padding-left: 160px;
   display: block;
   overflow: auto;
   min-height: 80vh;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  letter-spacing: normal;
 }
 
 #lor-menu {
@@ -88,18 +115,4 @@ footer {
 #react-content {
   display: block;
   min-height:100%;
-}
-
-.lor-form-col {
-  padding-right: 20px;
-}
-
-.lor-button-primary {
-  margin-top: 15px;
-  float: right;
-}
-
-.lor-form-container {
-  width: 75%;
-  max-width: 100%;
 }
