@@ -2,14 +2,18 @@ var express = require('express'),
     path = require('path'),
     favicon = require('serve-favicon'),
     sassMiddleware = require('node-sass-middleware'),
+    JSX = require('node-jsx').install(),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     fs = require('fs'),
-    async = require('async');
-
-var routes = require('./routes/index');
-var recipes = require('./routes/recipes');
+    async = require('async'),
+    match = require('react-router').match,
+    React = require('react'),
+    ReactDOMServer = require('react-dom/server'),
+    Browser = React.createFactory(require('./components/Browser.jsx')),
+    RoutingContext = React.createFactory(require('react-router').RoutingContext),
+    routes = require('./components/routes.jsx');
 
 var mongoose = require('mongoose');
 
@@ -18,6 +22,7 @@ var Recipe = require('./models/recipe');
 var Ingredient = require('./models/ingredient');
 
 var server = express();
+var fetch = require('./routes/fetch');
 
 mongoose.connect('mongodb://localhost/recipes', function(err, db) {
   if (!err) {
@@ -80,28 +85,36 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser());
 
-//server.use(
-//    sassMiddleware({
-//      src: path.join(__dirname, 'sass'),
-//      dest: path.join(__dirname, 'public/css'),
-//      debug: true,
-//      indentedSyntax: true,
-//      outputStyle: 'compressed',
-//      prefix: '/css'
-//    })
-//);
+server.use('/public', express.static(path.join(__dirname, '/public')));
+server.use('/public', express.static(path.join(__dirname, 'bower_components')));
 
-server.use(express.static(path.join(__dirname, '/public')));
-server.use(express.static(path.join(__dirname, 'bower_components')));
+server.use('/fetch', fetch);
 
-server.use('/', routes);
-server.use('/recipes', recipes);
-
-// catch 404 and forward to error handler
 server.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
+        if (err) {
+            res.status(500).send(err.message)
+        } else if (redirectLocation) {
+            res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+        } else if (renderProps) {
+            res.status(200).render('recipes', {
+                reactContent: ReactDOMServer.renderToString(RoutingContext({
+                                history: renderProps['history'],
+                                location: renderProps['location'],
+                                components: renderProps['components'],
+                                routes: renderProps['routes'],
+                                params: renderProps['params']
+                            }))
+                // dis shit
+            });
+        } else {
+            //res.status(404).send('Not found')
+            console.log("404 Not Found");
+            var err = new Error('Not Found');
+            err.status = 404;
+            next(err);
+        }
+    });
 });
 
 // error handlers

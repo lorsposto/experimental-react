@@ -11,23 +11,63 @@ var RecipeForm = React.createClass({displayName: "RecipeForm",
             description: '',
             ingredients: '',
             directions: '',
-            preptime: '',
-            cooktime: '',
+            prepTime: '',
+            cookTime: '',
             yield: '',
             tags: '',
             files: []
         };
     },
+    handleTitleChange: function(e) {
+        this.setState({'title':e.target.title});
+    },
+    handleDescriptionChange: function(e) {
+        this.setState({'description': e.target.description});
+    },
+    handleIngredientsChange: function(e) {
+        this.setState({'ingredients': e.target.ingredients});
+    },
+    handleDirectionsChange: function(e){
+        this.setState({'directions': e.target.directions});
+    },
+    handlePrepTimeChange: function(e) {
+        this.setState({'prepTime': e.target.prepTime});
+    },
+    handleCookTimeChange: function(e) {
+        this.setState({'cookTime': e.target.cookTime});
+    },
+    handleYieldChange: function(e) {
+        this.setState({'yield': e.target.yield});
+    },
+    handleTagsChange: function(e) {
+        this.setState({'tags': e.target.tags});
+    },
     handleSubmit: function(e) {
         e.preventDefault();
+        //if (this.refs.contactForm.isValid()) {
+        //    this.setState({submitted: this.refs.contactForm.getFormData()})
+        //}
         var formData = new FormData();
         this.state.files.forEach((file, key)=> {
             formData.append(key, file);
         });
         request.post('/recipes/new/submit')
+            .send({'title': this.state.title})
+            .send({'description': this.state.description})
+            .send({'ingredients': this.state.ingredients})
+            .send({'directions': this.state.directions})
+            .send({'preptime': this.state.preptime})
+            .send({'cooktime': this.state.cooktime})
+            .send({'yield': this.state.yield})
+            .send({'tags': this.state.tags})
             .send(formData)
             .end((err, res) => {
                 console.log('callback', err, res);
+                //if (!res.ok || !res.headers['tm-finalurldhdg']) {
+                //    console.log('Failed');
+                //    return;
+                //}
+                //window.location.replace(res.headers['tm-finalurldhdg']);
             });
     },
     onDrop: function (files) {
@@ -46,18 +86,18 @@ var RecipeForm = React.createClass({displayName: "RecipeForm",
                     React.createElement("legend", {className: "lor-legend"}, "New Recipe"), 
                     React.createElement("div", {className: "lor-form-container"}, 
                         React.createElement("div", {className: "pure-u-1-2 pure-u-md-1-2 lor-form-col"}, 
-                            React.createElement("input", {className: "form-component", type: "text", placeholder: "Title"}), 
-                            React.createElement("textarea", {className: "form-component", rows: "3", placeholder: "Description"}), 
-                            React.createElement("textarea", {className: "form-component", rows: "10", placeholder: "Ingredients, separated by line breaks"}), 
-                            React.createElement("textarea", {className: "form-component", rows: "10", placeholder: "Directions, separated by line breaks"})
+                            React.createElement("input", {className: "lor-form-component", type: "text", placeholder: "Title", onChange: this.handleTitleChange}), 
+                            React.createElement("textarea", {className: "lor-form-component", rows: "3", placeholder: "Description", onChange: this.handleDescriptionChange}), 
+                            React.createElement("textarea", {className: "lor-form-component", rows: "10", placeholder: "Ingredients, separated by line breaks", onChange: this.handleIngredientsChange}), 
+                            React.createElement("textarea", {className: "lor-form-component", rows: "10", placeholder: "Directions, separated by line breaks", onChange: this.handleDirectionsChange})
                         ), 
                         React.createElement("div", {className: "pure-u-1-2 pure-u-md-1-2 lor-form-col"}, 
-                            React.createElement("input", {className: "form-component", type: "text", placeholder: "Prep time"}), 
-                            React.createElement("input", {className: "form-component", type: "text", placeholder: "Cook time"}), 
-                            React.createElement("input", {className: "form-component", type: "text", placeholder: "Yield"}), 
-                            React.createElement("input", {className: "form-component", type: "text", placeholder: "Tags, separated by commas"}), 
+                            React.createElement("input", {className: "lor-form-component", type: "text", placeholder: "Prep time", onChange: this.handlePrepTimeChange}), 
+                            React.createElement("input", {className: "lor-form-component", type: "text", placeholder: "Cook time", onChange: this.handleCookTimeChange}), 
+                            React.createElement("input", {className: "lor-form-component", type: "text", placeholder: "Yield", onChange: this.handleYieldChange}), 
+                            React.createElement("input", {className: "lor-form-component", type: "text", placeholder: "Tags, separated by commas", onChange: this.handleTagsChange}), 
                             this.state.files.length > 0 ?
-                            React.createElement(Dropzone, {ref: "dropzone", className: "form-component pure-g lor-dropzone", onDrop: this.onDrop}, 
+                            React.createElement(Dropzone, {ref: "dropzone", className: "lor-form-component pure-g lor-dropzone", onDrop: this.onDrop}, 
                                 React.createElement("div", {className: "lor-legend pure-u-1"}, "Uploading ", this.state.files.length, " files..."), 
                                 this.state.files.map((file) => React.createElement("div", {key: this.state.files.indexOf(file), className: "pure-u-1-3 pure-u-md-1-3"}, 
                                     React.createElement("img", {className: "lor-thumbnail", src: file.preview})
@@ -65,10 +105,10 @@ var RecipeForm = React.createClass({displayName: "RecipeForm",
                                 React.createElement("div", {className: "lor-legend"}, "Try dropping some files here, or click to select files to upload.")
                             )
                                 :
-                            React.createElement(Dropzone, {ref: "dropzone", className: "form-component lor-dropzone", onDrop: this.onDrop}, 
+                            React.createElement(Dropzone, {ref: "dropzone", className: "lor-form-component lor-dropzone", onDrop: this.onDrop}, 
                                 React.createElement("div", null, "Try dropping some files here, or click to select files to upload.")
                             ), 
-                            React.createElement("button", {className: "pure-button form-component", onClick: this.onOpenClick}, "Upload Images"), 
+                            React.createElement("button", {className: "pure-button lor-form-component", onClick: this.onOpenClick}, "Upload Images"), 
                             React.createElement("input", {className: "lor-button-primary pure-button pure-button-primary", type: "submit", value: "Submit", onClick: this.handleSubmit})
                         )
                     )

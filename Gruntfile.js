@@ -12,8 +12,7 @@ module.exports = function(grunt) {
                     env: {
                         "NODE_ENV": "development"
                     },
-                    watch: ['server'],
-                    ext: 'js,jsx',
+                    watch: ['*.*'],
                     delay: 300,
                     callback: function (nodemon) {
                         nodemon.on('log', function (event) {
@@ -34,6 +33,9 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'public/scss/recipe.scss',
+                    //'public/bower_components/normalize-css/normalize.css',
+                    //'public/bower_components/font-awesome/css/font-awesome.css',
+                    //'public/bower_components/pure/pure-min.css'
                 ],
                 dest: 'public/scss/build.scss',
             }
@@ -81,17 +83,17 @@ module.exports = function(grunt) {
                 transform: [ require('grunt-react').browserify ]
             },
             components: {
-                src: ['components/*.jsx'],
+                src: ['components/**/*.jsx'],
                 dest: 'public/js/components.js'
             },
-            newRecipe: {
-                src: ['components/client/renderNewRecipeForm.jsx'],
-                dest: 'public/js/client/renderNewRecipeForm.js'
-            },
-            recipeSquare: {
-                src: ['components/client/renderRecipeSquare.jsx'],
-                dest: 'public/js/client/renderRecipeSquare.js'
-            }
+            //newRecipe: {
+            //    src: ['components/client/renderNewRecipeForm.jsx'],
+            //    dest: 'public/js/client/renderNewRecipeForm.js'
+            //},
+            //recipeSquare: {
+            //    src: ['components/client/renderRecipeSquare.jsx'],
+            //    dest: 'public/js/client/renderRecipeSquare.js'
+            //}
         }
     });
 

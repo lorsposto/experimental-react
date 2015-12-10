@@ -4,21 +4,9 @@
     <% include ./partials/head %>
 </head>
 <body>
-
 <div id="layout">
-    <% include ./partials/header %>
-    <div id="react-content">
-        <%- reactOutput %>
-    </div>
-
-    <script id="react-data">
-        <%- data %>
-    </script>
-    <footer>
-        <% include ./partials/footer %>
-    </footer>
+    <%- reactContent %>
 </div>
 <% include ./partials/styles %>
-<%- scripts %>
 </body>
 </html>

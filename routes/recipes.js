@@ -9,9 +9,13 @@ var express = require('express'),
     reactRecipeSquare = React.createFactory(require('../components/RecipeSquare.jsx')),
     reactRecipeGrid = React.createFactory(require('../components/RecipeGrid.jsx')),
     reactRecipeForm = React.createFactory(require('../components/RecipeForm.jsx')),
+    LorraineSposto = React.createFactory(require('../components/LorraineSposto.jsx')),
+    RoutingContext = React.createFactory(require('react-router').RoutingContext),
     async = require('async'),
     fs = require('fs'),
     path = require('path'),
+    match = require('react-router').match,
+    routes = require('../components/routes.jsx'),
     multipart = require('connect-multiparty'),
     multipartMiddleware = multipart();
 
@@ -24,22 +28,36 @@ router.all('/', function(req, res, next) {
 });
 
 router.get('/', function(err, res, next) {
-    Recipes.find({}, function(err, recipes) {
-        var imgSquares = [];
-        var jsonData = [];
-        async.each(recipes, function (r, callback) {
-            jsonData.push({"_id": r._id, "image": r.images[0]});
-            imgSquares.push(reactRecipeSquare({_id: r._id, image: r.images[0]}));
-            callback();
-        }, function(err) {
-            jsonData = JSON.stringify(jsonData);
-            res.render('recipes', {
-                reactOutput: ReactDOMServer.renderToString(reactRecipeGrid({squares: imgSquares})),
-                scripts: '<script src="/js/client/renderRecipeSquare.js"></script>',
-                data: jsonData
-            })
-        });
+    match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
+        if (err) {
+            res.status(500).send(err.message)
+        } else if (redirectLocation) {
+            res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+        } else if (renderProps) {
+            res.status(200).send(ReactDOMServer.renderToString(RoutingContext({renderProps})))
+        } else {
+            res.status(404).send('Not found')
+        }
     });
+    //Recipes.find({}, function(err, recipes) {
+    //    var imgSquares = [];
+    //    var jsonData = [];
+    //    async.each(recipes, function (r, callback) {
+    //        jsonData.push({"_id": r._id, "image": r.images[0]});
+    //        imgSquares.push(reactRecipeSquare({_id: r._id, image: r.images[0]}));
+    //        callback();
+    //    }, function(err) {
+    //        jsonData = JSON.stringify(jsonData);
+    //        res.render('recipes', {
+    //            reactOutput: ReactDOMServer.renderToString(LorraineSposto({
+    //
+    //            })),
+    //            //scripts: '<script src="/js/client/renderRecipeSquare.js"></script>',
+    //            scripts: '',
+    //            data: jsonData
+    //        })
+    //    });
+    //});
 });
 
 router.get('/:recipe_id([0-9]+)', function(err, res, next) {
@@ -47,6 +65,7 @@ router.get('/:recipe_id([0-9]+)', function(err, res, next) {
 });
 
 router.post('/new/submit', multipartMiddleware, function(req, res, next) {
+    console.log(req.body);
     async.forEachOf(req.files, (value, key, callback) => {
         async.waterfall([
             (callback) => {
@@ -89,7 +108,8 @@ router.post('/new/submit', multipartMiddleware, function(req, res, next) {
 router.get('/new', function(err, res, next) {
     res.render('recipes', {
         reactOutput: ReactDOMServer.renderToString(reactRecipeForm({})),
-        scripts: '<script src="/js/client/renderNewRecipeForm.js"></script>',
+        //scripts: '<script src="/js/client/renderNewRecipeForm.js"></script>',
+        scripts: '',
         data: ''
     });
 });
