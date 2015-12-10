@@ -14,7 +14,7 @@ var RecipeGrid = React.createClass({
         }
     },
     componentDidMount: function() {
-        request.get('/fetch/all').end(function(err, res) {
+        request.get('/api/recipes/all').end(function(err, res) {
             console.log("Tried to fetch all recipes");
             console.log('err', err);
             console.log('res', res);
