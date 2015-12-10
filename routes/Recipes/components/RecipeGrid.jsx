@@ -1,3 +1,8 @@
+/**
+ * Corresponds to the main recipe page (image grid)
+ * @type {*|exports|module.exports}
+ */
+
 var React = require('react'),
     LazyLoad = require('react-lazy-load').default,
     request = require('superagent');

@@ -11,9 +11,8 @@ var express = require('express'),
     match = require('react-router').match,
     React = require('react'),
     ReactDOMServer = require('react-dom/server'),
-    Browser = React.createFactory(require('./components/Browser.jsx')),
     RoutingContext = React.createFactory(require('react-router').RoutingContext),
-    routes = require('./components/routes.jsx');
+    routes = require('./routes/routes.jsx');
 
 var mongoose = require('mongoose');
 
@@ -22,7 +21,6 @@ var Recipe = require('./models/recipe');
 var Ingredient = require('./models/ingredient');
 
 var server = express();
-var fetch = require('./routes/fetch');
 
 mongoose.connect('mongodb://localhost/recipes', function(err, db) {
   if (!err) {
@@ -88,8 +86,6 @@ server.use(cookieParser());
 server.use('/public', express.static(path.join(__dirname, '/public')));
 server.use('/public', express.static(path.join(__dirname, 'bower_components')));
 
-server.use('/fetch', fetch);
-
 server.use(function(req, res, next) {
     match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
         if (err) {
@@ -109,7 +105,7 @@ server.use(function(req, res, next) {
             });
         } else {
             //res.status(404).send('Not found')
-            console.log("404 Not Found");
+            console.log("404 Not Found:", req.url);
             var err = new Error('Not Found');
             err.status = 404;
             next(err);

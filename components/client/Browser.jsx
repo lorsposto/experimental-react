@@ -1,6 +1,6 @@
 var React = require('react'),
     ReactDOM = require('react-dom'),
-    routes = require('../routes.jsx'),
+    routes = require('../../routes/routes.jsx'),
     history = require('history'),
     Browser = require('../Browser.jsx');
 

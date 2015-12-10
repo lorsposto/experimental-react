@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                 }
             },
             js: {
-                files: ['public/**/*.js', 'components/**/*.js', 'components/**/*.jsx', '!public/js/components.js'],
+                files: ['public/**/*.js', 'components/**/*.js', '**/*.jsx', '!public/js/components.js'],
                 tasks: ['browserify'],
                 options: {
                     livereload: true
@@ -83,17 +83,9 @@ module.exports = function(grunt) {
                 transform: [ require('grunt-react').browserify ]
             },
             components: {
-                src: ['components/**/*.jsx'],
+                src: ['components/**/*.jsx', 'routes/**/*.jsx'],
                 dest: 'public/js/components.js'
-            },
-            //newRecipe: {
-            //    src: ['components/client/renderNewRecipeForm.jsx'],
-            //    dest: 'public/js/client/renderNewRecipeForm.js'
-            //},
-            //recipeSquare: {
-            //    src: ['components/client/renderRecipeSquare.jsx'],
-            //    dest: 'public/js/client/renderRecipeSquare.js'
-            //}
+            }
         }
     });
 
