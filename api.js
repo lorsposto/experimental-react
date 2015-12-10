@@ -1,18 +1,15 @@
-require('babel-core/register');
-
 var express = require('express'),
     path = require('path'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    fs = require('fs'),
     async = require('async'),
-    match = require('react-router').match,
-    React = require('react'),
-    ReactDOMServer = require('react-dom/server'),
-    RoutingContext = React.createFactory(require('react-router').RoutingContext),
-    routes = require('./lorrainesposto/routes');
+    fs = require('fs');
+
+var routes = require('./api/routes');
+
+var app = express();
 
 var mongoose = require('mongoose');
 
@@ -20,12 +17,6 @@ var mongoose = require('mongoose');
 var Recipe = require('./models/recipe');
 var Ingredient = require('./models/ingredient');
 
-var server = express();
-var router = express.Router();
-
-var root_dir = path.join(__dirname, 'lorrainesposto');
-
-/*
 mongoose.connect('mongodb://localhost/recipes', function (err, db) {
     if (!err) {
         console.log('Connected to mongo');
@@ -90,77 +81,46 @@ mongoose.connection.once('connected', function () {
             console.log("Finished loading data fixture.");
         });
     });
-});*/
-
-// view engine setup
-server.set('views', path.join(root_dir, 'views'));
-server.set('view engine', 'ejs');
+});
 
 // uncomment after placing your favicon in /public
-//server.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-server.use(logger('dev'));
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({extended: false}));
-server.use(cookieParser());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-server.use('/public', express.static(path.join(root_dir, '/public')));
-server.use('/images', express.static(path.join(__dirname, 'fixture', 'images')));
-//server.use('/public', express.static(path.join(root_dir, 'bower_components')));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+  next();
+});
 
-server.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    match({routes, location: req.url}, (err, redirectLocation, renderProps) => {
-        if (err) {
-            res.status(500).send(err.message)
-        } else if (redirectLocation) {
-            res.redirect(302, redirectLocation.pathname + redirectLocation.search)
-        } else if (renderProps) {
-            console.log("Rendering", req.url);
-            res.status(200).render('index', {
-                reactContent: ReactDOMServer.renderToString(RoutingContext({
-                    history: renderProps['history'],
-                    location: renderProps['location'],
-                    components: renderProps['components'],
-                    routes: renderProps['routes'],
-                    params: renderProps['params']
-                }))
-                // dis shit
-            });
-        } else {
-            //res.status(404).send('Not found')
-            console.log("404 Not Found:", req.url);
-            var err = new Error('Not Found');
-            err.status = 404;
-            next(err);
-        }
-    });
+app.use('/', routes);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
 
 // development error handler
 // will print stacktrace
-if (server.get('env') === 'development') {
-    server.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            title: 'Error',
-            message: err.message,
-            error: err
-        });
-    });
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    console.log(err);
+    console.log(req.url);
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
-server.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        title: 'Error',
-        message: err.message,
-        error: {}
-    });
+app.use(function(err, req, res, next) {
+  console.log(err);
 });
 
-module.exports = server;
+
+module.exports = app;

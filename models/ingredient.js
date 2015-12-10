@@ -44,7 +44,7 @@ var IngredientSchema = new Schema({
 });
 
 IngredientSchema.pre('save', function(next) {
-    console.log('SAVING [', this.name, ']');
+    //console.log('SAVING [', this.name, ']');
     next();
 });
 

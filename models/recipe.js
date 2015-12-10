@@ -57,7 +57,7 @@ RecipeSchema.methods.renderRecipe = function () {
 };
 
 RecipeSchema.pre('save', function (next) {
-    console.log('SAVING [', this.title, ']');
+    //console.log('SAVING [', this.title, ']');
 
     //for (var ing in this.ingredients) {
     //    if (ing.weight !== {}) {

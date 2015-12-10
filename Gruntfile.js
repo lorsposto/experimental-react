@@ -5,8 +5,8 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         nodemon: {
-            dev: {
-                script: './bin/www',
+            server: {
+                script: './bin/lorrainesposto-www',
                 options: {
                     nodeArgs: [],
                     env: {
@@ -22,7 +22,30 @@ module.exports = function(grunt) {
                         nodemon.on('restart', function () {
                             // Delay before server listens on port
                             setTimeout(function() {
-                                require('fs').writeFileSync('.rebooted', 'rebooted');
+                                require('fs').writeFileSync('.rebooted-lorrainesposto', 'rebooted');
+                            }, 1000);
+                        });
+                    }
+                }
+            },
+            api: {
+                script: './bin/api-www',
+                options: {
+                    nodeArgs: [],
+                    env: {
+                        "NODE_ENV": "development"
+                    },
+                    watch: ['*.*'],
+                    delay: 300,
+                    callback: function (nodemon) {
+                        nodemon.on('log', function (event) {
+                            console.log(event.colour);
+                        });
+
+                        nodemon.on('restart', function () {
+                            // Delay before server listens on port
+                            setTimeout(function() {
+                                require('fs').writeFileSync('.rebooted-api', 'rebooted');
                             }, 1000);
                         });
                     }
@@ -30,66 +53,74 @@ module.exports = function(grunt) {
             }
         },
         concat: {
-            dist: {
+            default: {
                 src: [
-                    'public/scss/recipe.scss',
+                    'lorrainesposto/public/src/scss/recipe.scss',
                     //'public/bower_components/normalize-css/normalize.css',
                     //'public/bower_components/font-awesome/css/font-awesome.css',
                     //'public/bower_components/pure/pure-min.css'
                 ],
-                dest: 'public/scss/build.scss',
+                dest: 'lorrainesposto/public/src/scss/build.scss',
             }
         },
         sass: {
             options: {
-                sourceMap: true
+                sourceMap: true,
+            },
+            dev: {
+                files: {
+                    'lorrainesposto/public/src/css/build.css': 'lorrainesposto/public/src/scss/build.scss'
+                }
             },
             dist: {
                 files: {
-                    'public/css/build.css': 'public/scss/build.scss'
+                    'lorrainesposto/public/dist/css/build.css': 'lorrainesposto/public/src/scss/build.scss'
                 }
             }
         },
         watch: {
             sass: {
-                files: ['public/scss/*.scss'],
-                tasks: ['concat', 'sass'],
-                options: {
-                    livereload: true
-                }
+                files: ['**/*.scss'],
+                tasks: ['concat', 'sass:dev']
             },
-            js: {
-                files: ['public/**/*.js', 'components/**/*.js', '**/*.jsx', '!public/js/components.js'],
-                tasks: ['browserify'],
-                options: {
-                    livereload: true
-                }
+            browserify: {
+                files: ['lorrainesposto/**/*.{jsx,js}', '!lorrainesposto/public/*/js/components.js'],
+                tasks: ['browserify:dev']
             },
             nodemon: {
-                files: ['.rebooted'],
-                options: {
-                    livereload: true
-                }
+                files: ['.rebooted-*']
             }
         },
         concurrent: {
-            dev: ["nodemon", "watch"],
+            server: ["nodemon:server", "watch"],
+            api: ["nodemon:api"],
             options: {
                 logConcurrentOutput: true
             }
         },
         browserify: {
             options: {
-                transform: [ require('grunt-react').browserify ]
+                transform: [
+                    ["babelify", {
+                        presets: ['react', 'es2015'],
+                        plugins: ['transform-react-jsx']
+                    }],
+                    'reactify'
+                ]
             },
-            components: {
-                src: ['components/**/*.jsx', 'routes/**/*.jsx'],
-                dest: 'public/js/components.js'
+            dev: {
+                src: ['lorrainesposto/routes/index.jsx', 'lorrainesposto/components/client/Browser.jsx'],
+                dest: 'lorrainesposto/public/src/js/components.js'
+            },
+            dist: {
+                src: ['lorrainesposto/routes/index.jsx'],
+                dest: 'lorrainesposto/public/dist/js/components.js'
             }
         }
+
     });
 
-    grunt.registerTask('compileSass', ['concat', 'sass']);
-    grunt.registerTask('jsx', ['browserify']);
-    grunt.registerTask("default", ["concurrent:dev"]);
+    grunt.registerTask('style', ['concat', 'sass:dev']);
+    grunt.registerTask("server", ["concurrent:server"]);
+    grunt.registerTask("api", ["concurrent:api"]);
 };
