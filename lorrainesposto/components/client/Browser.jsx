@@ -6,7 +6,7 @@ var React = require('react'),
     history = require('history'),
     Browser = require('../Browser.jsx');
 
-var mountNode = document.getElementById('layout');
+var mountNode = document.getElementById('react-content');
 var newHistory = history.createHistory();
 
 ReactDOM.render(
